@@ -14,7 +14,6 @@ export async function getCabins() {
 
 // Insert data to supabase
 export async function createEditCabin({ newCabinData, id }) {
-  // console.log(newCabinData, id);
   const isEditSession = Boolean(id);
 
   // 1️.) Check if image is already a stored URL
@@ -50,6 +49,8 @@ export async function createEditCabin({ newCabinData, id }) {
       isEditSession ? "Cabin could not be edited" : "Cabin could not be created"
     );
   }
+
+  if (hasImagePath) return data;
 
   // 4️.) Upload image ONLY if it's a new file
   if (!hasImagePath) {
