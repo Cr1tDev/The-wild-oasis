@@ -80,7 +80,7 @@ function Open({ children, opens: opensWindowName }) {
 
   return cloneElement(children, {
     onClick: (e) => {
-      e.stopPropagation();
+      e?.stopPropagation?.();
       open(opensWindowName);
     },
   });
