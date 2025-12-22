@@ -1,4 +1,7 @@
+import { useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
+
+/* ================= STYLES ================= */
 
 const StyledFilter = styled.div`
   border: 1px solid var(--color-grey-100);
@@ -13,23 +16,55 @@ const StyledFilter = styled.div`
 const FilterButton = styled.button`
   background-color: var(--color-grey-0);
   border: none;
+  border-radius: var(--border-radius-sm);
+  font-weight: 500;
+  font-size: 1.4rem;
+  padding: 0.44rem 0.8rem;
+  transition: all 0.3s;
 
-  ${(props) =>
-    props.active &&
+  ${({ $active }) =>
+    $active &&
     css`
       background-color: var(--color-brand-600);
       color: var(--color-brand-50);
     `}
-
-  border-radius: var(--border-radius-sm);
-  font-weight: 500;
-  font-size: 1.4rem;
-  /* To give the same height as select */
-  padding: 0.44rem 0.8rem;
-  transition: all 0.3s;
 
   &:hover:not(:disabled) {
     background-color: var(--color-brand-600);
     color: var(--color-brand-50);
   }
 `;
+
+/* ================= COMPONENT ================= */
+
+function Filter({ filterField, options }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const defaultValue = options.at(0)?.value;
+  const currentFilter = searchParams.get(filterField) ?? defaultValue;
+
+  function handleClick(value) {
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      params.set(filterField, value);
+      return params;
+    });
+  }
+
+  return (
+    <StyledFilter>
+      {options.map(({ value, label }) => (
+        <FilterButton
+          key={value}
+          $active={value === currentFilter}
+          disabled={options.value === currentFilter}
+          onClick={() => handleClick(value)}
+        >
+          {label}
+        </FilterButton>
+      ))}
+    </StyledFilter>
+  );
+}
+
+export default Filter;
