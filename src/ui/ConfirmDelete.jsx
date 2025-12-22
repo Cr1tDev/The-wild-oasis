@@ -7,36 +7,47 @@ const StyledConfirmDelete = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-
-  & p {
-    color: var(--color-grey-500);
-    margin-bottom: 1.2rem;
-  }
-
-  & div {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1.2rem;
-  }
 `;
 
-function ConfirmDelete({ resourceName, onConfirm, disabled }) {
+const Description = styled.p`
+  color: var(--color-grey-500);
+  margin-bottom: 1.2rem;
+`;
+
+const Actions = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.2rem;
+`;
+
+function ConfirmDelete({
+  resourceName = "item",
+  onConfirm,
+  onCloseModal,
+  disabled = false,
+}) {
   return (
-    <StyledConfirmDelete>
+    <StyledConfirmDelete role="dialog" aria-modal="true">
       <Heading as="h3">Delete {resourceName}</Heading>
-      <p>
+
+      <Description>
         Are you sure you want to delete this {resourceName} permanently? This
         action cannot be undone.
-      </p>
+      </Description>
 
-      <div>
-        <Button variation="secondary" disabled={disabled}>
+      <Actions>
+        <Button
+          $variation="secondary"
+          disabled={disabled}
+          onClick={onCloseModal}
+        >
           Cancel
         </Button>
-        <Button variation="danger" disabled={disabled}>
+
+        <Button $variation="danger" disabled={disabled} onClick={onConfirm}>
           Delete
         </Button>
-      </div>
+      </Actions>
     </StyledConfirmDelete>
   );
 }
