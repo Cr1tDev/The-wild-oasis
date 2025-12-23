@@ -1,8 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 
-/* ================= STYLES ================= */
-
 const StyledFilter = styled.div`
   border: 1px solid var(--color-grey-100);
   background-color: var(--color-grey-0);
@@ -35,8 +33,6 @@ const FilterButton = styled.button`
   }
 `;
 
-/* ================= COMPONENT ================= */
-
 function Filter({ filterField, options }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -46,7 +42,10 @@ function Filter({ filterField, options }) {
   function handleClick(value) {
     setSearchParams((prev) => {
       const params = new URLSearchParams(prev);
+
       params.set(filterField, value);
+      params.set("page", 1);
+
       return params;
     });
   }
